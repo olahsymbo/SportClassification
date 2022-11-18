@@ -1,5 +1,9 @@
 package com.sportclassification;
 
+import com.sportclassification.data.DataLoader;
+
+import java.util.Arrays;
+
 public class SportClassApp {
 
     /**
@@ -8,6 +12,10 @@ public class SportClassApp {
      * @param args - command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("This is a sport project");
+        String data_path = "/src/main/java/com/sportclassification/dataset/train";
+        DataLoader dl = new DataLoader();
+        String[] data = dl.imageDirectories(data_path);
+        System.out.println(Arrays.toString(data));
     }
+
 }
