@@ -12,20 +12,25 @@ import java.util.List;
 
 public class DataLoader {
 
+    String data_path;
     Path root = Paths.get(".").normalize().toAbsolutePath();
 
-    public String[] imageDirectories(String data_path){
-        String pathName = root + data_path;
+    public DataLoader(String data_path) {
+        this.data_path = data_path;
+    }
+
+    public String[] imageDirectories(){
+        String pathName = root + this.data_path;
         File file = new File(pathName);
         String[] directories = file.list((dir, name) -> new File(dir, name).isDirectory());
         return directories;
     }
 
-    public List<BufferedImage> loadImages(String data_path){
-        String[] data = imageDirectories(data_path);
+    public List<BufferedImage> loadImages(){
+        String[] data = imageDirectories();
         List<BufferedImage> allImages = new ArrayList<>();
         for (String datum : data) {
-            String full_path = data_path + "/" + datum;
+            String full_path = this.data_path + "/" + datum;
             java.io.FileFilter filter = file -> !file.isHidden() && (file.isDirectory()
                     || (file.getName().endsWith(".jpg")) || (file.getName().endsWith(".png")));
 
