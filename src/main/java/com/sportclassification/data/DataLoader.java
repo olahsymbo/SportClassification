@@ -1,5 +1,8 @@
 package com.sportclassification.data;
 
+import com.sportclassification.utils.Preprocess;
+import org.opencv.core.Mat;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,9 +29,10 @@ public class DataLoader {
         return directories;
     }
 
-    public List<BufferedImage> loadImages(){
+    public List<Mat> loadImages(){
         String[] data = imageDirectories();
-        List<BufferedImage> allImages = new ArrayList<>();
+        List<Mat> allImages = new ArrayList<>();
+        Preprocess prc = new Preprocess(224, 224);
         for (String datum : data) {
             String fullFolderPath = this.data_path + "/" + datum;
 
@@ -38,7 +42,8 @@ public class DataLoader {
                 if (image.isFile() && (image.getName().endsWith(".jpg")) || (image.getName().endsWith(".png"))){
                     try {
                         BufferedImage img = ImageIO.read(new File(fullFolderPath + "/" + image.getName()));
-                        allImages.add(img);
+                        Mat resizedImage = prc.imageFiltering(img);
+                        allImages.add(resizedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
