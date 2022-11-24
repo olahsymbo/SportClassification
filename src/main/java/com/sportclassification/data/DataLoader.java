@@ -1,10 +1,14 @@
 package com.sportclassification.data;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.FileSystems;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.FieldPosition;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DataLoader {
 
@@ -17,4 +21,29 @@ public class DataLoader {
         return directories;
     }
 
+    public List<BufferedImage> loadImages(String data_path){
+        String[] data = imageDirectories(data_path);
+        List<BufferedImage> allImages = new ArrayList<>();
+        for (String datum : data) {
+            String full_path = data_path + "/" + datum;
+            java.io.FileFilter filter = file -> !file.isHidden() && (file.isDirectory()
+                    || (file.getName().endsWith(".jpg")) || (file.getName().endsWith(".png")));
+
+            javaxt.io.Directory directory = new javaxt.io.Directory(full_path);
+            directory.getFiles();
+            javaxt.io.File[] files;
+            files = directory.getFiles(filter, true);
+            for (javaxt.io.File file : files) {
+                try {
+                    BufferedImage img = ImageIO.read(new File(full_path + "/" + file));
+                    allImages.add(img);
+                    System.out.println(full_path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return allImages;
+    }
 }
