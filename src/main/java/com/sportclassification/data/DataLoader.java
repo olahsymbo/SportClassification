@@ -31,13 +31,11 @@ public class DataLoader {
         List<BufferedImage> allImages = new ArrayList<>();
         for (String datum : data) {
             String fullFolderPath = this.data_path + "/" + datum;
-            java.io.FileFilter filter = file -> !file.isHidden() && (file.isDirectory()
-                    || (file.getName().endsWith(".jpg")) || (file.getName().endsWith(".png")));
 
             File folder = new File(fullFolderPath);
             File[] imageNames = folder.listFiles();
             for (File image : imageNames) {
-                if (image.isFile()){
+                if (image.isFile() && (image.getName().endsWith(".jpg")) || (image.getName().endsWith(".png"))){
                     try {
                         BufferedImage img = ImageIO.read(new File(fullFolderPath + "/" + image.getName()));
                         allImages.add(img);
