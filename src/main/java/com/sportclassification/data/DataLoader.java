@@ -16,11 +16,11 @@ public class DataLoader {
     Path root = Paths.get(".").normalize().toAbsolutePath();
 
     public DataLoader(String data_path) {
-        this.data_path = data_path;
+        this.data_path = root + data_path;
     }
 
     public String[] imageDirectories(){
-        String pathName = root + this.data_path;
+        String pathName = this.data_path;
         File file = new File(pathName);
         String[] directories = file.list((dir, name) -> new File(dir, name).isDirectory());
         return directories;
@@ -30,24 +30,22 @@ public class DataLoader {
         String[] data = imageDirectories();
         List<BufferedImage> allImages = new ArrayList<>();
         for (String datum : data) {
-            String full_path = this.data_path + "/" + datum;
+            String fullFolderPath = this.data_path + "/" + datum;
             java.io.FileFilter filter = file -> !file.isHidden() && (file.isDirectory()
                     || (file.getName().endsWith(".jpg")) || (file.getName().endsWith(".png")));
 
-            javaxt.io.Directory directory = new javaxt.io.Directory(full_path);
-            directory.getFiles();
-            javaxt.io.File[] files;
-            files = directory.getFiles(filter, true);
-            for (javaxt.io.File file : files) {
-                try {
-                    BufferedImage img = ImageIO.read(new File(full_path + "/" + file));
-                    allImages.add(img);
-                    System.out.println(full_path);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            File folder = new File(fullFolderPath);
+            File[] imageNames = folder.listFiles();
+            for (File image : imageNames) {
+                if (image.isFile()){
+                    try {
+                        BufferedImage img = ImageIO.read(new File(fullFolderPath + "/" + image.getName()));
+                        allImages.add(img);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
         }
         return allImages;
     }
