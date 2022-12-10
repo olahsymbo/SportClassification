@@ -10,30 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DataLoader {
+public final class DataLoader {
 
-    String data_path;
-    Path root = Paths.get(".").normalize().toAbsolutePath();
-
-    public DataLoader(String data_path) {
-        this.data_path = root + data_path;
-    }
-
-    public String[] imageDirectories(){
-        String pathName = this.data_path;
+    public static String[] imageDirectories(String dataPath){
+        String pathName = Paths.get(".").normalize().toAbsolutePath() + dataPath;
         File file = new File(pathName);
-        String[] directories = file.list((dir, name) -> new File(dir, name).isDirectory());
-        return directories;
+        return file.list((dir, name) -> new File(dir, name).isDirectory());
     }
 
-    public List<BufferedImage> loadImages(){
-        String[] data = imageDirectories();
+    public static List<BufferedImage> loadImages(String dataPath){
+        String[] data = imageDirectories(dataPath);
         List<BufferedImage> allImages = new ArrayList<>();
         for (String datum : data) {
-            String fullFolderPath = this.data_path + "/" + datum;
+            String fullFolderPath = dataPath + "/" + datum;
 
             File folder = new File(fullFolderPath);
-            File[] imageNames = folder.listFiles();
+            File[] imageNames = folder.listFiles();   // this guy may generate a NullPointerException (wrap in a try catch and do something like logging or something)
+            if(imageNames == null){
+                // do something
+                continue;   // will go to the next iteration if the current imageNames is null
+            }
             for (File image : imageNames) {
                 if (image.isFile() && (image.getName().endsWith(".jpg")) || (image.getName().endsWith(".png"))){
                     try {

@@ -11,12 +11,10 @@ public class SportClassApp {
 
     public static void main(String[] args) {
         String data_path = "/src/main/java/com/sportclassification/dataset/train";
-        DataLoader dl = new DataLoader(data_path);
-        List<BufferedImage> allTrainImages = dl.loadImages();
+        List<BufferedImage> allTrainImages = DataLoader.loadImages(data_path);
 
         String dataTestPath = "/src/main/java/com/sportclassification/dataset/test";
-        DataLoader dlTest = new DataLoader(dataTestPath);
-        List<BufferedImage> allTestImages = dlTest.loadImages();
+        List<BufferedImage> allTestImages = DataLoader.loadImages(dataTestPath);
 
         CNNModel cnnModel = new CNNModel();
         cnnModel.train(allTrainImages);
