@@ -25,10 +25,10 @@ public final class DataLoader {
             String fullFolderPath = dataPath + "/" + datum;
 
             File folder = new File(fullFolderPath);
-            File[] imageNames = folder.listFiles();   // this guy may generate a NullPointerException (wrap in a try catch and do something like logging or something)
+            File[] imageNames = folder.listFiles();
             if(imageNames == null){
-                // do something
-                continue;   // will go to the next iteration if the current imageNames is null
+                System.out.println("unable to read image");
+                continue;
             }
             for (File image : imageNames) {
                 if (image.isFile() && (image.getName().endsWith(".jpg")) || (image.getName().endsWith(".png"))){
