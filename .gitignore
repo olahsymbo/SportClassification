@@ -25,6 +25,15 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 ##############################
+## Data Format
+##############################
+*.jpg
+*.png
+*.jpeg
+*.tiff
+*.csv
+
+##############################
 ## Gradle
 ##############################
 bin/
